@@ -1,0 +1,15 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { FiBell, FiCheckCircle, FiInfo, FiAlertCircle, FiTrash2 } from "react-icons/fi";
+import { useNotifications } from "../../context/NotificationContext";
+
+export default function Notifications() {
+  const { notifications, unreadCount, markAsRead, markAllAsRead, removeNotification } = useNotifications();
+  const navigate = useNavigate();
+  const openNotification = (notification) => {
+    const id = notification._id || notification.id;
+    if (!notification.read) markAsRead(id);
+    if (notification.link) navigate(notification.link);
+  };
+  return <div className="mx-auto max-w-4xl space-y-6"><div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-sm font-semibold text-[#E87524]">Dashboard</p><h1 className="mt-1 text-2xl font-bold text-[#102A43]">Notifications</h1><p className="mt-2 text-sm text-gray-500">Stay updated with your projects and requests.</p></div>{unreadCount > 0 && <button type="button" onClick={markAllAsRead} className="text-sm font-semibold text-[#E87524] hover:underline">Mark all as read</button>}</div><div className="space-y-3">{notifications.map((notification) => { const id = notification._id || notification.id; return <div key={id} role="button" tabIndex={0} onClick={() => openNotification(notification)} onKeyDown={(event) => { if (event.key === "Enter") openNotification(notification); }} className={`flex cursor-pointer gap-4 rounded-2xl border p-5 transition-all ${notification.read ? "border-gray-100 bg-white" : "border-orange-100 bg-orange-50/30"}`}><div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${notification.type === "success" ? "bg-green-50 text-green-600" : notification.type === "warning" ? "bg-orange-50 text-orange-600" : "bg-blue-50 text-blue-600"}`}>{notification.type === "success" ? <FiCheckCircle /> : notification.type === "warning" ? <FiAlertCircle /> : <FiInfo />}</div><div className="min-w-0 flex-1"><div className="flex items-center justify-between gap-2"><h3 className="font-bold text-[#102A43]">{notification.title}</h3>{!notification.read && <span className="h-2 w-2 rounded-full bg-[#E87524]" />}</div><p className="mt-1 text-sm leading-6 text-gray-600">{notification.message}</p><span className="mt-3 block text-xs text-gray-400">{notification.createdAt ? new Date(notification.createdAt).toLocaleString("en-IN") : "Recently"}</span></div><button type="button" onClick={(event) => { event.stopPropagation(); removeNotification(id); }} className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-gray-400 hover:bg-red-50 hover:text-red-600" aria-label="Delete notification"><FiTrash2 size={15} /></button></div>; })}{!notifications.length && <div className="rounded-2xl border border-gray-100 bg-white p-12 text-center"><FiBell size={30} className="mx-auto text-gray-300" /><h3 className="mt-4 font-bold text-[#102A43]">No Notifications</h3><p className="mt-1 text-sm text-gray-500">You're all caught up.</p></div>}</div></div>;
+}

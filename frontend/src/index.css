@@ -1,0 +1,333 @@
+@import "tailwindcss";
+
+/* =========================================
+   LAXMI CONSTRUCTION
+   GLOBAL STYLES
+========================================= */
+
+:root {
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color: #172033;
+  background: #ffffff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  background: #ffffff;
+  color: #172033;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* =========================================
+   HERO ANIMATIONS
+========================================= */
+
+.hero-fade {
+  animation: heroFade 0.8s ease-out both;
+}
+
+.hero-delay-1 {
+  animation-delay: 0.15s;
+}
+
+.hero-delay-2 {
+  animation-delay: 0.3s;
+}
+
+.hero-delay-3 {
+  animation-delay: 0.45s;
+}
+
+.hero-delay-4 {
+  animation-delay: 0.6s;
+}
+
+@keyframes heroFade {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   IMAGE HOVER
+========================================= */
+
+.image-zoom {
+  transition: transform 0.7s ease;
+}
+
+.image-zoom:hover {
+  transform: scale(1.05);
+}
+
+/* =========================================
+   SELECTION
+========================================= */
+
+::selection {
+  background: #f97316;
+  color: white;
+}
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0f2d4a;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #f97316;
+}
+
+/* =========================================================
+   HERO MOTION
+   Lightweight transform + opacity animations
+========================================================= */
+
+.hero-item {
+  animation: heroItemIn 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-delay-0 {
+  animation-delay: 0.05s;
+}
+
+.hero-delay-1 {
+  animation-delay: 0.15s;
+}
+
+.hero-delay-2 {
+  animation-delay: 0.28s;
+}
+
+.hero-delay-3 {
+  animation-delay: 0.4s;
+}
+
+.hero-delay-4 {
+  animation-delay: 0.52s;
+}
+
+@keyframes heroItemIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* Decorative hero ring */
+
+.hero-ring {
+  animation: heroRing 18s linear infinite;
+  will-change: transform;
+}
+
+@keyframes heroRing {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Scroll line */
+
+.hero-scroll-line {
+  display: block;
+  width: 1px;
+  height: 38px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.65),
+    rgba(255, 255, 255, 0)
+  );
+  animation: scrollLine 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollLine {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scaleY(0.65);
+    transform-origin: top;
+  }
+
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+}
+
+/* Respect reduced-motion preferences */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-item,
+  .hero-ring,
+  .hero-scroll-line {
+    animation: none !important;
+  }
+}
+/* =========================================================
+   CHATBOT ANIMATIONS
+========================================================= */
+
+@keyframes chatOpen {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-chat-open {
+  animation: chatOpen 0.22s ease-out both;
+}
+
+@keyframes dropdownIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-dropdown {
+  animation: dropdownIn 0.18s ease-out both;
+}
+
+.chat-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: #94a3b8;
+  animation: chatDot 1.2s ease-in-out infinite;
+}
+
+.chat-dot-delay-1 {
+  animation-delay: 0.15s;
+}
+
+.chat-dot-delay-2 {
+  animation-delay: 0.3s;
+}
+
+@keyframes chatDot {
+  0%,
+  60%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+
+  30% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-chat-open,
+  .animate-dropdown,
+  .chat-dot {
+    animation: none !important;
+  }
+}
+/* =========================================================
+   DASHBOARD ANIMATIONS
+========================================================= */
+
+@keyframes dashboardDropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-dropdown {
+  animation: dashboardDropdown 0.18s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-dropdown {
+    animation: none !important;
+  }
+}

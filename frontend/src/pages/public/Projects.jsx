@@ -1,0 +1,4 @@
+import { useEffect, useState } from "react";
+import projectService from "../../services/projectService";
+import ProjectGrid from "../../components/projects/ProjectGrid";
+export default function Projects() { const [projects,setProjects]=useState([]); const [loading,setLoading]=useState(true); const [error,setError]=useState(""); useEffect(()=>{projectService.getProjects().then(r=>setProjects(r?.data?.projects||[])).catch(e=>setError(e.message)).finally(()=>setLoading(false));},[]); return <div className="mx-auto max-w-7xl px-4 pb-16 pt-32 sm:px-6"><p className="text-sm font-semibold text-orange-500">Our work</p><h1 className="mt-2 text-4xl font-bold text-[#102A43]">Projects delivered with purpose</h1>{error?<p className="mt-8 rounded-xl bg-red-50 p-4 text-red-700">Unable to load projects. Please try again.</p>:<div className="mt-10"><ProjectGrid projects={projects} loading={loading}/></div>}</div>; }
