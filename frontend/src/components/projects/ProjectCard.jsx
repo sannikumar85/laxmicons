@@ -7,6 +7,7 @@ import {
   FiCheckCircle,
   FiClock,
 } from "react-icons/fi";
+import { assetUrl } from "../../utils/assetUrl";
 
 const ProjectCard = ({ project }) => {
   if (!project) return null;
@@ -24,13 +25,13 @@ const ProjectCard = ({ project }) => {
   } = project;
 
   const statusStyles = {
-    Completed: "bg-green-50 text-green-700 border-green-100",
-    Ongoing: "bg-orange-50 text-orange-700 border-orange-100",
-    Upcoming: "bg-blue-50 text-blue-700 border-blue-100",
+    completed: "bg-green-50 text-green-700 border-green-100",
+    ongoing: "bg-orange-50 text-orange-700 border-orange-100",
+    planning: "bg-blue-50 text-blue-700 border-blue-100",
   };
 
   const statusClass =
-    statusStyles[status] ||
+    statusStyles[String(status).toLowerCase()] ||
     "bg-gray-50 text-gray-700 border-gray-100";
 
   return (
@@ -39,7 +40,7 @@ const ProjectCard = ({ project }) => {
       <div className="relative h-60 overflow-hidden bg-gray-100">
         {image ? (
           <img
-            src={image}
+            src={assetUrl(image)}
             alt={title}
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -57,12 +58,12 @@ const ProjectCard = ({ project }) => {
         <div
           className={`absolute right-4 top-4 flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold ${statusClass}`}
         >
-          {status === "Completed" ? (
+          {String(status).toLowerCase() === "completed" ? (
             <FiCheckCircle size={13} />
           ) : (
             <FiClock size={13} />
           )}
-          {status}
+          {String(status).replace(/\b\w/g, (letter) => letter.toUpperCase())}
         </div>
 
         {/* Category */}

@@ -10,6 +10,7 @@ import {
   FiMessageCircle,
 } from "react-icons/fi";
 import Button from "../common/Button";
+import { assetUrl } from "../../utils/assetUrl";
 
 const ProjectDetails = ({
   project,
@@ -51,7 +52,7 @@ const ProjectDetails = ({
     scope = [],
   } = project;
 
-  const isCompleted = status === "Completed";
+  const isCompleted = String(status).toLowerCase() === "completed";
 
   return (
     <div className="space-y-8">
@@ -69,7 +70,7 @@ const ProjectDetails = ({
         <div className="relative h-[300px] overflow-hidden sm:h-[400px] lg:h-[500px]">
           {image ? (
             <img
-              src={image}
+              src={assetUrl(image)}
               alt={title}
               className="h-full w-full object-cover"
             />

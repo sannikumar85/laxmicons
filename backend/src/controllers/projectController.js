@@ -17,7 +17,8 @@ exports.getProjects = asyncHandler(async (req, res) => {
   const { search, category, status, featured, page = 1, limit = 12 } = req.query;
   const filter = {};
   if (category) filter.category = category;
-  if (status) filter.status = status;
+  // "all" is used by the admin listing to request every project.
+  if (status && status !== "all") filter.status = status;
   if (featured !== undefined) filter.featured = featured === "true";
   if (search) filter.$text = { $search: search };
 

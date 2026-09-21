@@ -39,7 +39,17 @@ const apiLimiter = rateLimit({
 });
 app.use("/api", apiLimiter);
 
-app.use("/uploads", express.static(path.resolve(process.env.UPLOAD_DIR || "uploads")));
+// Uploaded project images and resumes are served by the API, while the browser
+// application runs on a different local origin (for example :5173). Helmet's
+// default same-origin resource policy would otherwise block image rendering.
+app.use(
+  "/uploads",
+  (req, res, next) => {
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    next();
+  },
+  express.static(path.resolve(process.env.UPLOAD_DIR || "uploads"))
+);
 
 app.get("/", (req, res) => {
   res.json({
