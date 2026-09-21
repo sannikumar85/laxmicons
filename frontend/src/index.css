@@ -95,6 +95,35 @@ button {
   }
 }
 
+/* Keeps the hero photograph unfiltered while giving its title clear depth. */
+.hero-title-3d {
+  text-shadow:
+    1px 1px 0 rgba(15, 23, 42, 0.95),
+    3px 3px 0 rgba(15, 23, 42, 0.82),
+    7px 7px 18px rgba(0, 0, 0, 0.42);
+  animation: hero-title-3d-in 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-copy-shadow {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.75);
+}
+
+@keyframes hero-title-3d-in {
+  from {
+    opacity: 0;
+    transform: perspective(800px) rotateX(16deg) rotateY(-5deg) translate3d(0, 28px, 0);
+    text-shadow: 0 0 0 rgba(15, 23, 42, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: perspective(800px) rotateX(0) rotateY(0) translate3d(0, 0, 0);
+    text-shadow:
+      1px 1px 0 rgba(15, 23, 42, 0.95),
+      3px 3px 0 rgba(15, 23, 42, 0.82),
+      7px 7px 18px rgba(0, 0, 0, 0.42);
+}
+
 /* =========================================
    IMAGE HOVER
 ========================================= */
@@ -328,6 +357,17 @@ button {
 
 @media (prefers-reduced-motion: reduce) {
   .animate-dropdown {
+    animation: none !important;
+  }
+}
+
+/* Defined last so the dedicated 3D title motion takes precedence over the general hero entrance class. */
+.hero-title-3d {
+  animation: hero-title-3d-in 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title-3d {
     animation: none !important;
   }
 }

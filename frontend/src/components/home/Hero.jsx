@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import {
   FiArrowRight,
   FiPlay,
-  FiCheckCircle,
   FiUsers,
   FiCompass,
 } from "react-icons/fi";
@@ -13,13 +12,13 @@ function Hero() {
     <section
       className="
         relative
-        min-h-[720px]
-        sm:min-h-[760px]
-        lg:min-h-[820px]
+        min-h-[680px]
+        sm:min-h-[720px]
+        lg:min-h-[760px]
         flex
         items-center
         overflow-hidden
-        bg-[#071827]
+        bg-slate-900
       "
     >
       {/* =====================================================
@@ -29,8 +28,8 @@ function Hero() {
       <div className="absolute inset-0">
 
         <img
-          src="/images/hero-construction.jpg"
-          alt="Construction project by Laxmi Construction"
+          src="/images/consultancy-service.jpg"
+          alt="Construction consultancy by Laxmi Construction"
           className="
             w-full
             h-full
@@ -41,73 +40,7 @@ function Hero() {
           decoding="async"
         />
 
-        {/* Main dark overlay */}
-        <div className="absolute inset-0 bg-[#071827]/65" />
-
-        {/* Left-side readability gradient */}
-        <div
-          className="
-            absolute
-            inset-0
-            bg-gradient-to-r
-            from-[#071827]
-            via-[#071827]/85
-            to-[#071827]/20
-          "
-        />
-
-        {/* Bottom fade */}
-        <div
-          className="
-            absolute
-            inset-x-0
-            bottom-0
-            h-40
-            bg-gradient-to-t
-            from-[#071827]/60
-            to-transparent
-          "
-        />
-
       </div>
-
-      {/* =====================================================
-          DECORATIVE ELEMENTS
-          Lightweight CSS only
-      ====================================================== */}
-
-      <div
-        className="
-          absolute
-          -right-32
-          top-24
-          hidden
-          h-[500px]
-          w-[500px]
-          rounded-full
-          border
-          border-white/10
-          lg:block
-          hero-ring
-        "
-        aria-hidden="true"
-      />
-
-      <div
-        className="
-          absolute
-          -right-10
-          top-44
-          hidden
-          h-[330px]
-          w-[330px]
-          rounded-full
-          border
-          border-orange-400/10
-          lg:block
-        "
-        aria-hidden="true"
-      />
 
       {/* =====================================================
           MAIN CONTENT
@@ -123,13 +56,13 @@ function Hero() {
           px-4
           sm:px-6
           lg:px-8
-          pt-24
-          sm:pt-28
-          lg:pt-24
+          pt-28
+          sm:pt-32
+          lg:pt-28
         "
       >
 
-        <div className="max-w-3xl">
+        <div className="max-w-3xl xl:max-w-[46rem]">
 
           {/* =================================================
               EYEBROW
@@ -162,7 +95,7 @@ function Hero() {
                 "
                 aria-hidden="true"
               >
-                <span
+                {/* <span
                   className="
                     absolute
                     inline-flex
@@ -173,7 +106,7 @@ function Hero() {
                     bg-orange-400
                     opacity-60
                   "
-                />
+                /> */}
 
                 <span
                   className="
@@ -213,17 +146,18 @@ function Hero() {
               hero-item
               hero-delay-1
               mt-6
-              text-[2.65rem]
-              leading-[1.05]
+              text-[2.5rem]
+              leading-[1.08]
               tracking-tight
               font-extrabold
               text-white
+              hero-title-3d
 
-              sm:text-5xl
-              md:text-6xl
+              sm:text-[3.75rem]
+              md:text-[4.25rem]
 
-              lg:text-[4.5rem]
-              xl:text-[5rem]
+              lg:text-[4.75rem]
+              xl:text-[5.25rem]
             "
           >
 
@@ -233,7 +167,7 @@ function Hero() {
 
               Dreams Into{" "}
 
-              <span className="relative inline-block text-orange-500">
+              <span className="relative inline-block text-white">
 
                 Reality.
 
@@ -246,7 +180,7 @@ function Hero() {
                     h-1
                     w-14
                     rounded-full
-                    bg-orange-500
+                    bg-white
                     sm:w-20
                   "
                   aria-hidden="true"
@@ -266,11 +200,12 @@ function Hero() {
             className="
               hero-item
               hero-delay-2
-              mt-7
+              mt-6
               max-w-2xl
               text-sm
               leading-7
-              text-slate-200
+              text-orange-800
+              hero-copy-shadow
 
               sm:text-base
               sm:leading-8
@@ -337,7 +272,7 @@ function Hero() {
             >
 
               <span>
-                Start Your Project
+                Request a Consultation
               </span>
 
               <FiArrowRight
@@ -364,8 +299,8 @@ function Hero() {
                 gap-2
                 rounded-xl
                 border
-                border-white/25
-                bg-white/10
+                border-white/35
+                bg-white/15
                 px-6
                 py-3.5
                 text-sm
@@ -421,7 +356,7 @@ function Hero() {
             className="
               hero-item
               hero-delay-4
-              mt-10
+          mt-9
               max-w-3xl
 
               border-t
