@@ -25,7 +25,7 @@ const UserLayout = () => {
           <DashboardNavbar onMenuClick={() => setSidebarOpen(true)} userName={user?.name} notificationCount={0} onLogout={handleLogout} />
 
           {/* Page Content */}
-          <main className="flex-1 p-4 sm:p-6 lg:p-8">
+          <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-8">
             <Outlet />
           </main>
         </div>

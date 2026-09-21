@@ -49,14 +49,14 @@ function WhyChooseUs() {
               <img
                 src="/images/about-construction.jpg"
                 alt="Laxmi Construction team and project"
-                className="w-full h-[420px] sm:h-[500px] object-cover transition-transform duration-700 hover:scale-[1.02]"
+                className="h-[300px] w-full object-cover transition-transform duration-700 hover:scale-[1.02] sm:h-[500px]"
               />
 
             </div>
 
             {/* Floating card */}
 
-            <div className="absolute -bottom-6 right-4 sm:right-8 bg-white rounded-2xl shadow-xl border border-slate-100 p-5 sm:p-6 max-w-[230px]">
+            <div className="absolute -bottom-5 right-3 max-w-[200px] rounded-2xl border border-slate-100 bg-white p-4 shadow-xl sm:-bottom-6 sm:right-8 sm:max-w-[230px] sm:p-6">
 
               <p className="text-3xl font-bold text-[#0F2D4A]">
                 100%

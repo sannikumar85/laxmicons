@@ -96,7 +96,7 @@ function FeaturedProjects() {
             <Link
               to="/projects"
               key={project.title}
-              className="group relative h-[330px] rounded-2xl overflow-hidden"
+              className="group relative h-[280px] overflow-hidden rounded-2xl sm:h-[330px]"
             >
 
               <img

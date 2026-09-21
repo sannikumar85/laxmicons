@@ -41,6 +41,62 @@ body {
   overflow-x: hidden;
 }
 
+/* Responsive baseline: prevents horizontal overflow and mobile browser zoom. */
+main,
+section,
+article,
+aside,
+header,
+footer,
+div {
+  min-width: 0;
+}
+
+input,
+select,
+textarea,
+button {
+  max-width: 100%;
+}
+
+@media (max-width: 639px) {
+  /* Public pages reserve just enough space for the compact navigation bar. */
+  main > [class*="pt-32"] {
+    padding-top: 7rem;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  h1,
+  h2,
+  h3,
+  p,
+  span,
+  a,
+  button,
+  td,
+  th {
+    overflow-wrap: anywhere;
+  }
+
+  [role="dialog"] {
+    max-height: calc(100dvh - 96px);
+  }
+
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;
+  }
+
+  select[class*="min-w-"] {
+    min-width: 100% !important;
+  }
+}
+
 img {
   max-width: 100%;
   display: block;
