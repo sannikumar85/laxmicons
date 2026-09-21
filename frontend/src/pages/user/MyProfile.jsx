@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FiUser,
   FiMail,
@@ -26,6 +26,19 @@ const MyProfile = () => {
   });
 
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    setFormData({
+      name: user?.name || "",
+      email: user?.email || "",
+      phone: profile?.phone || "",
+      address: profile?.address || "",
+      city: profile?.city || "",
+      state: profile?.state || "",
+      bio: profile?.bio || "",
+    });
+  }, [user, profile]);
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -36,8 +49,16 @@ const MyProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
+    setError("");
 
-    const result = await updateProfile(formData);
+    if (!/^[6-9]\d{9}$/.test(formData.phone.replace(/\s/g, ""))) {
+      setError("Please enter a valid 10-digit Indian phone number.");
+      return;
+    }
+
+    const { email, ...editableProfile } = formData;
+    const result = await updateProfile(editableProfile);
 
     if (result?.success) {
       setMessage("Profile updated successfully.");
@@ -45,7 +66,7 @@ const MyProfile = () => {
       setTimeout(() => {
         setMessage("");
       }, 2500);
-    }
+    } else setError(result?.message || "Unable to update profile.");
   };
 
   return (
@@ -67,6 +88,12 @@ const MyProfile = () => {
       {message && (
         <div className="rounded-xl border border-green-100 bg-green-50 px-4 py-3 text-sm font-medium text-green-700">
           {message}
+        </div>
+      )}
+
+      {error && (
+        <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+          {error}
         </div>
       )}
 
@@ -124,6 +151,7 @@ const MyProfile = () => {
               value={formData.email}
               onChange={handleChange}
               icon={<FiMail />}
+              disabled
             />
 
             <Input
@@ -204,6 +232,7 @@ const Input = ({
   value,
   onChange,
   icon,
+  disabled = false,
 }) => (
   <div>
     <label className="mb-2 block text-sm font-medium text-gray-700">
@@ -220,7 +249,8 @@ const Input = ({
         name={name}
         value={value}
         onChange={onChange}
-        className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 pl-11 pr-4 text-sm outline-none focus:border-[#E87524] focus:bg-white focus:ring-2 focus:ring-orange-100"
+        disabled={disabled}
+        className="h-12 w-full rounded-xl border border-gray-200 bg-gray-50 pl-11 pr-4 text-sm outline-none focus:border-[#E87524] focus:bg-white focus:ring-2 focus:ring-orange-100 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:text-gray-500"
       />
     </div>
   </div>

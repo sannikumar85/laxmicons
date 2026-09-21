@@ -9,6 +9,7 @@ import {
   FiSend,
 } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
+import serviceRequestService from "../../services/serviceRequestService";
 
 const CreateServiceRequest = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const CreateServiceRequest = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -31,17 +33,27 @@ const CreateServiceRequest = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setError("");
     setLoading(true);
 
-    setTimeout(() => {
-      console.log("Service Request:", formData);
+    try {
+      await serviceRequestService.createServiceRequest({
+        service: formData.service,
+        customerName: formData.name.trim(),
+        phone: formData.phone.trim(),
+        location: formData.location.trim(),
+        preferredDate: formData.preferredDate,
+        description: formData.requirements.trim() || "No additional requirements supplied.",
+      });
 
-      setLoading(false);
       navigate("/dashboard/service-requests");
-    }, 700);
+    } catch (requestError) {
+      setError(requestError.message || "Unable to submit your service request.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -68,6 +80,12 @@ const CreateServiceRequest = () => {
         onSubmit={handleSubmit}
         className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-8"
       >
+        {error && (
+          <div className="mb-5 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+            {error}
+          </div>
+        )}
+
         {/* Service */}
         <div>
           <label className="mb-2 block text-sm font-medium text-gray-700">

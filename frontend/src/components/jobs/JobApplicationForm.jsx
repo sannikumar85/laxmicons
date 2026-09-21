@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FiUser,
   FiMail,
@@ -27,6 +27,15 @@ function JobApplicationForm({
 
   const [resume, setResume] = useState(null);
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    setFormData((previous) => ({
+      ...previous,
+      name: previous.name || user?.name || "",
+      email: previous.email || user?.email || "",
+      phone: previous.phone || user?.phone || "",
+    }));
+  }, [user]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -91,6 +100,7 @@ function JobApplicationForm({
 
   const removeResume = () => {
     setResume(null);
+    setErrors((previous) => ({ ...previous, resume: "" }));
 
     const input =
       document.getElementById("resume");
@@ -213,6 +223,7 @@ function JobApplicationForm({
           onChange={handleChange}
           placeholder="you@example.com"
           autoComplete="email"
+          required
           className={inputClass(errors.email)}
         />
       </FormField>
@@ -233,6 +244,7 @@ function JobApplicationForm({
           placeholder="10-digit mobile number"
           inputMode="numeric"
           autoComplete="tel"
+          required
           maxLength={10}
           className={inputClass(errors.phone)}
         />

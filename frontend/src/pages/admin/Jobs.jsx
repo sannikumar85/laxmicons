@@ -6,18 +6,29 @@ import {
   FiTrash2,
   FiMapPin,
   FiBriefcase,
+  FiUsers,
 } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import jobService from "../../services/jobService";
 
 const Jobs = () => {
   const [search, setSearch] = useState("");
 
   const [jobs, setJobs] = useState([]);
+  const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: "", department: "", location: "", type: "Full Time", experience: "", salary: "", description: "", status: "open" });
-  useEffect(() => { jobService.getJobs({ status: "all" }).then((response) => setJobs(response?.data?.jobs || [])).catch((requestError) => setError(requestError.message)).finally(() => setLoading(false)); }, []);
+  useEffect(() => {
+    Promise.all([jobService.getJobs({ status: "all" }), jobService.getAllJobApplications()])
+      .then(([jobsResponse, applicationsResponse]) => {
+        setJobs(jobsResponse?.data?.jobs || []);
+        setApplications(applicationsResponse?.data?.applications || []);
+      })
+      .catch((requestError) => setError(requestError.message || "Unable to load recruitment data."))
+      .finally(() => setLoading(false));
+  }, []);
   /* const [jobs, setJobs] = useState([
     {
       id: 1,
@@ -63,6 +74,8 @@ const Jobs = () => {
     );
   }, [jobs, search]);
 
+  const applicationCount = (jobId) => applications.filter((application) => application.job?._id === jobId || application.job === jobId).length;
+
   const deleteJob = (id) => {
     if (!window.confirm("Delete this job?")) return;
 
@@ -99,6 +112,18 @@ const Jobs = () => {
 
       {showForm && <form onSubmit={create} className="grid gap-3 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:grid-cols-2"><input required placeholder="Job title" value={form.title} onChange={(event) => setForm({ ...form, title: event.target.value })} className="h-11 rounded-xl border px-3 text-sm"/><input placeholder="Department" value={form.department} onChange={(event) => setForm({ ...form, department: event.target.value })} className="h-11 rounded-xl border px-3 text-sm"/><input placeholder="Location" value={form.location} onChange={(event) => setForm({ ...form, location: event.target.value })} className="h-11 rounded-xl border px-3 text-sm"/><input placeholder="Experience" value={form.experience} onChange={(event) => setForm({ ...form, experience: event.target.value })} className="h-11 rounded-xl border px-3 text-sm"/><input placeholder="Salary" value={form.salary} onChange={(event) => setForm({ ...form, salary: event.target.value })} className="h-11 rounded-xl border px-3 text-sm"/><select value={form.type} onChange={(event) => setForm({ ...form, type: event.target.value })} className="h-11 rounded-xl border px-3 text-sm"><option>Full Time</option><option>Part Time</option><option>Contract</option><option>Internship</option></select><textarea placeholder="Job description" value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} className="min-h-24 rounded-xl border p-3 text-sm sm:col-span-2"/><button className="h-11 rounded-xl bg-[#102A43] px-5 text-sm font-semibold text-white sm:col-span-2">Publish job</button></form>}
 
+      <section className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-50 text-[#E87524]"><FiUsers size={20} /></div>
+            <div><h2 className="font-bold text-[#102A43]">Received Applications</h2><p className="mt-0.5 text-sm text-gray-500">{loading ? "Loading received applications..." : `${applications.length} application${applications.length === 1 ? "" : "s"} received across all jobs.`}</p></div>
+          </div>
+          <Link to="/admin/job-applications" className="inline-flex h-10 items-center justify-center rounded-xl bg-[#102A43] px-4 text-sm font-semibold text-white hover:bg-[#0b243b]">Review applications</Link>
+        </div>
+      </section>
+
+      {error && <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</div>}
+
       <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
         <div className="relative max-w-lg">
           <FiSearch
@@ -117,7 +142,7 @@ const Jobs = () => {
 
       <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[850px] text-left">
+          <table className="w-full min-w-[980px] text-left">
             <thead className="border-b bg-gray-50">
               <tr>
                 <th className="px-5 py-4 text-xs uppercase text-gray-500">
@@ -138,6 +163,10 @@ const Jobs = () => {
 
                 <th className="px-5 py-4 text-xs uppercase text-gray-500">
                   Status
+                </th>
+
+                <th className="px-5 py-4 text-xs uppercase text-gray-500">
+                  Applications
                 </th>
 
                 <th className="px-5 py-4 text-right text-xs uppercase text-gray-500">
@@ -191,6 +220,13 @@ const Jobs = () => {
                     >
                       {job.status}
                     </span>
+                  </td>
+
+                  <td className="px-5 py-4">
+                    <Link to="/admin/job-applications" className="inline-flex items-center gap-2 rounded-lg bg-orange-50 px-3 py-2 text-xs font-semibold text-[#E87524] hover:bg-orange-100">
+                      <FiUsers size={15} />
+                      {applicationCount(job.id || job._id)} received
+                    </Link>
                   </td>
 
                   <td className="px-5 py-4">

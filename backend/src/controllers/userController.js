@@ -5,7 +5,7 @@ const { success, fail } = require("../utils/apiResponse");
 
 const sanitize = (u) => ({
   id: u._id, name: u.name, email: u.email, phone: u.phone,
-  address: u.address, city: u.city, pincode: u.pincode, avatar: u.avatar,
+  address: u.address, city: u.city, state: u.state, pincode: u.pincode, bio: u.bio, avatar: u.avatar,
   role: u.role, status: u.status, notificationPreferences: u.notificationPreferences
   ,emailVerified: u.emailVerified
 });
@@ -13,7 +13,7 @@ const sanitize = (u) => ({
 exports.getProfile = asyncHandler(async (req, res) => success(res, { user: sanitize(req.user) }));
 
 exports.updateProfile = asyncHandler(async (req, res) => {
-  const allowed = ["name", "phone", "address", "city", "pincode"];
+  const allowed = ["name", "phone", "address", "city", "state", "pincode", "bio"];
   allowed.forEach(key => {
     if (req.body[key] !== undefined) req.user[key] = req.body[key];
   });

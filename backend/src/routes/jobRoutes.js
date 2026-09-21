@@ -12,7 +12,7 @@ router.patch("/admin/applications/:id/status", protect, authorize("admin"), c.up
 router.delete("/admin/applications/:id", protect, authorize("admin"), c.deleteApplication);
 
 router.get("/:id", c.getJobById);
-router.post("/:id/apply", upload.single("resume"), c.apply);
+router.post("/:id/apply", protect, upload.single("resume"), c.apply);
 
 router.post("/", protect, authorize("admin"), c.createJob);
 router.put("/:id", protect, authorize("admin"), c.updateJob);

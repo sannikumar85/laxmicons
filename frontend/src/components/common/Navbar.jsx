@@ -8,10 +8,15 @@ import {
   FiX,
   FiPhone,
   FiArrowRight,
+  FiChevronDown,
+  FiUser,
+  FiSettings,
+  FiLogOut,
 } from "react-icons/fi";
 
 function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
 
   const navLinks = [
@@ -144,41 +149,9 @@ function Navbar() {
                 <span>Call Us</span>
               </a>
 
-              {isAuthenticated ? <Link to={user?.role === "admin" ? "/admin" : "/dashboard"} className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 hover:text-orange-500">Dashboard</Link> : <><Link to="/login" className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 hover:text-orange-500">Login</Link><Link to="/register" className="rounded-xl border border-orange-500 px-3 py-2 text-sm font-semibold text-orange-500 hover:bg-orange-50">Register</Link></>}
+              {!isAuthenticated && <><Link to="/login" className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 hover:text-orange-500">Login</Link><Link to="/register" className="rounded-xl border border-orange-500 px-3 py-2 text-sm font-semibold text-orange-500 hover:bg-orange-50">Register</Link><Link to="/contact" className="rounded-xl bg-orange-500 px-5 py-3 text-sm font-semibold text-white hover:bg-orange-600">Get Started</Link></>}
 
-              {isAuthenticated && <button type="button" onClick={logout} className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-700 hover:text-red-500">Logout</button>}
-
-              <Link
-                to="/contact"
-                className="
-                  group
-                  inline-flex
-                  items-center
-                  gap-2
-                  bg-orange-500
-                  hover:bg-orange-600
-                  text-white
-                  px-5
-                  py-3
-                  rounded-xl
-                  text-sm
-                  font-semibold
-                  transition-all
-                  duration-200
-                  hover:shadow-lg
-                  hover:shadow-orange-500/20
-                  active:scale-[0.98]
-                "
-              >
-
-                Get Started
-
-                <FiArrowRight
-                  size={16}
-                  className="transition-transform duration-200 group-hover:translate-x-1"
-                />
-
-              </Link>
+              {isAuthenticated && <div className="relative"><button type="button" onClick={() => setProfileOpen((previous) => !previous)} aria-expanded={profileOpen} className="flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 hover:border-orange-300 hover:text-orange-500"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#102A43] text-xs font-bold text-white">{user?.name?.charAt(0).toUpperCase() || "U"}</span><span className="max-w-24 truncate">{user?.name || "Profile"}</span><FiChevronDown size={15} className={profileOpen ? "rotate-180" : ""}/></button>{profileOpen && <div className="absolute right-0 top-full mt-2 w-52 overflow-hidden rounded-2xl border border-slate-200 bg-white py-1 shadow-xl"><Link to="/dashboard" onClick={() => setProfileOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm text-slate-700 hover:bg-slate-50"><FiUser/>Dashboard</Link><Link to="/dashboard/profile" onClick={() => setProfileOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm text-slate-700 hover:bg-slate-50"><FiSettings/>My profile</Link><button type="button" onClick={() => { logout(); setProfileOpen(false); }} className="flex w-full items-center gap-3 border-t border-slate-100 px-4 py-3 text-left text-sm text-red-500 hover:bg-red-50"><FiLogOut/>Logout</button></div>}</div>}
 
             </div>
 
@@ -272,6 +245,7 @@ function Navbar() {
               <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
 
                 {!isAuthenticated && <div className="grid grid-cols-2 gap-3 sm:col-span-2"><Link to="/login" onClick={closeMobileMenu} className="flex items-center justify-center rounded-xl border border-slate-200 py-3 text-sm font-semibold text-slate-700">Login</Link><Link to="/register" onClick={closeMobileMenu} className="flex items-center justify-center rounded-xl border border-orange-500 py-3 text-sm font-semibold text-orange-500">Register</Link></div>}
+                {isAuthenticated && <div className="grid grid-cols-2 gap-3 sm:col-span-2"><Link to="/dashboard" onClick={closeMobileMenu} className="flex items-center justify-center rounded-xl bg-[#102A43] py-3 text-sm font-semibold text-white">Dashboard</Link><button type="button" onClick={() => { logout(); closeMobileMenu(); }} className="rounded-xl border border-red-200 py-3 text-sm font-semibold text-red-500">Logout</button></div>}
 
                 <a
                   href="tel:+919999999999"

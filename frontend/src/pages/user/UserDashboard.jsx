@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   FiBriefcase,
   FiClipboard,
-  FiUsers,
   FiFileText,
   FiArrowRight,
   FiClock,
@@ -12,36 +11,27 @@ import {
 import { Link } from "react-router-dom";
 
 import StatCard from "../../components/dashboard/StatCard";
-import ProjectStatus from "../../components/dashboard/ProjectStatus";
 import RecentRequests from "../../components/dashboard/RecentRequests";
 import projectService from "../../services/projectService";
 import serviceRequestService from "../../services/serviceRequestService";
 import jobService from "../../services/jobService";
-import labourService from "../../services/labourService";
 
 const UserDashboard = () => {
-  const [data, setData] = useState({ projects: [], services: [], labour: [], applications: [] });
-  useEffect(() => { Promise.all([projectService.getMyProjects(), serviceRequestService.getMyServiceRequests(), labourService.getMyLabourRequests(), jobService.getMyJobApplications()]).then(([projects, services, labour, applications]) => setData({ projects: projects?.data?.projects || [], services: services?.data?.requests || [], labour: labour?.data?.requests || [], applications: applications?.data?.applications || [] })).catch((error) => console.error("Unable to load dashboard:", error)); }, []);
+  const [data, setData] = useState({ projects: [], services: [], applications: [] });
+  useEffect(() => { Promise.all([projectService.getMyProjects(), serviceRequestService.getMyServiceRequests(), jobService.getMyJobApplications()]).then(([projects, services, applications]) => setData({ projects: projects?.data?.projects || [], services: services?.data?.requests || [], applications: applications?.data?.applications || [] })).catch((error) => console.error("Unable to load dashboard:", error)); }, []);
   const stats = [
     {
       title: "My Projects",
       value: data.projects.length,
       icon: <FiBriefcase />,
-      trend: "+1",
-      description: "this month",
+      trend: "",
+      description: "assigned projects",
     },
     {
       title: "Service Requests",
       value: data.services.length,
       icon: <FiClipboard />,
       trend: "+2",
-      description: "this month",
-    },
-    {
-      title: "Labour Requests",
-      value: data.labour.length,
-      icon: <FiUsers />,
-      trend: "+1",
       description: "this month",
     },
     {
@@ -53,36 +43,6 @@ const UserDashboard = () => {
     },
   ];
 
-  const projects = data.projects.map((project) => ({
-    id: project._id,
-    title: project.title,
-    client: project.client || "My project",
-    progress: project.progress,
-    status: project.status,
-  }));
-  /* const projects = [
-    {
-      id: 1,
-      title: "Modern Residential Building",
-      client: "My Project",
-      progress: 80,
-      status: "Ongoing",
-    },
-    {
-      id: 2,
-      title: "House Renovation",
-      client: "My Project",
-      progress: 100,
-      status: "Completed",
-    },
-    {
-      id: 3,
-      title: "Commercial Interior",
-      client: "My Project",
-      progress: 40,
-      status: "Ongoing",
-    },
-  ]; */
 
   const requests = data.services.map((request) => ({
     id: request._id,
@@ -158,13 +118,6 @@ const UserDashboard = () => {
           />
 
           <QuickAction
-            title="My Projects"
-            description="View your projects"
-            href="/dashboard/projects"
-            icon={<FiBriefcase />}
-          />
-
-          <QuickAction
             title="Find Jobs"
             description="Explore career opportunities"
             href="/careers"
@@ -173,9 +126,9 @@ const UserDashboard = () => {
         </div>
       </div>
 
-      {/* Projects + Status */}
-      <div className="grid gap-6 xl:grid-cols-[1.5fr_1fr]">
-        <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-6">
+      {/* Assigned projects appear only after the organisation assigns work. */}
+      <div className={`grid gap-6 ${data.projects.length ? "xl:grid-cols-[1.5fr_1fr]" : "xl:grid-cols-1"}`}>
+        {data.projects.length > 0 && <div className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm sm:p-6">
           <div className="mb-5 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-bold text-[#102A43]">
@@ -196,8 +149,8 @@ const UserDashboard = () => {
             </Link>
           </div>
 
-          <ProjectStatus projects={projects} />
-        </div>
+          <div className="space-y-3">{data.projects.map((project) => <Link key={project._id} to={`/dashboard/projects/${project._id}`} className="block rounded-xl border border-slate-100 p-4 hover:border-orange-200"><div className="flex items-center justify-between"><span className="font-semibold text-[#102A43]">{project.title}</span><span className="text-xs font-semibold text-orange-500">{project.progress || 0}%</span></div><div className="mt-3 h-2 rounded-full bg-slate-100"><div className="h-2 rounded-full bg-orange-500" style={{ width: `${project.progress || 0}%` }} /></div></Link>)}</div>
+        </div>}
 
         {/* Account Status */}
         <div className="rounded-2xl bg-[#102A43] p-6 text-white shadow-lg">

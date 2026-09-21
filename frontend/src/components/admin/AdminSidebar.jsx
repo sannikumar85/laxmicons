@@ -50,6 +50,11 @@ function AdminSidebar({
       icon: FiBriefcase,
     },
     {
+      label: "Job Applications",
+      path: "/admin/job-applications",
+      icon: FiFileText,
+    },
+    {
       label: "Messages",
       path: "/admin/contact-messages",
       icon: FiMessageSquare,
