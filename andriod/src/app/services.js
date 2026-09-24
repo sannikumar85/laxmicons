@@ -1,0 +1,7 @@
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
+import Screen from "../components/Screen";
+import PageHeader from "../components/PageHeader";
+const services = [["Construction", "Residential and commercial construction with quality materials and professional execution."], ["Consultancy", "Practical planning, estimates and technical guidance for confident decisions."], ["Renovation", "Transform existing spaces with reliable renovation and modern design solutions."], ["Labour Supply", "Reliable, skilled workforce for construction projects of different scales."]];
+export default function ServicesScreen() { return <Screen><PageHeader eyebrow="What we do" title="Construction services built around you" description="From the first plan to the final finish, we help you build with clarity." />{services.map(([title, copy]) => <View key={title} style={styles.card}><Text style={styles.title}>{title}</Text><Text style={styles.copy}>{copy}</Text><Pressable onPress={() => router.push("/contact")}><Text style={styles.action}>Request service →</Text></Pressable></View>)}</Screen>; }
+const styles = StyleSheet.create({ card: { backgroundColor: "#FFF", borderRadius: 18, padding: 20, marginBottom: 14, elevation: 2 }, title: { color: "#102A43", fontSize: 20, fontWeight: "800" }, copy: { color: "#64748B", fontSize: 15, lineHeight: 22, marginTop: 8 }, action: { color: "#E87524", fontSize: 14, fontWeight: "800", marginTop: 16 } });
