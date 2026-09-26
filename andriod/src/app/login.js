@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { api } from "../config/api";
 import { useAuth } from "../context/AuthContext";
 import { AuthShell, Brand, Caption, ErrorNote, Field, PrimaryButton, COLORS } from "../components/AuthUI";
@@ -8,10 +8,11 @@ import { AuthShell, Brand, Caption, ErrorNote, Field, PrimaryButton, COLORS } fr
 export default function LoginScreen() {
   const [email, setEmail] = useState(""); const [password, setPassword] = useState(""); const [busy, setBusy] = useState(false); const [error, setError] = useState("");
   const { signIn } = useAuth();
+  const { next } = useLocalSearchParams();
   const submit = async () => {
     setError(""); if (!email.trim() || !password) return setError("Enter your email address and password.");
     setBusy(true);
-    try { const response = await api.login({ email: email.trim().toLowerCase(), password }); await signIn({ token: response.data.token, user: response.data.user }); router.replace("/home"); }
+    try { const response = await api.login({ email: email.trim().toLowerCase(), password }); await signIn({ token: response.data.token, user: response.data.user }); router.replace(typeof next === "string" && next.startsWith("/") ? next : "/home"); }
     catch (e) { setError(e.message); if (e.message.toLowerCase().includes("verify your email")) router.push({ pathname: "/verify", params: { email: email.trim().toLowerCase() } }); }
     finally { setBusy(false); }
   };
@@ -19,3 +20,4 @@ export default function LoginScreen() {
 }
 const heading = { color: COLORS.navy, fontSize: 28, fontWeight: "900", textAlign: "center", marginBottom: 6 };
 const link = { color: COLORS.orange, fontWeight: "800" };
+
